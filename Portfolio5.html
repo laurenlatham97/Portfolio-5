@@ -195,7 +195,41 @@ summary {
 </div>
 
 
+<pre class="r"><code>library(tidyverse) </code></pre>
+<pre><code>## -- Attaching packages --------------------------------------- tidyverse 1.3.0 --</code></pre>
+<pre><code>## v ggplot2 3.3.3     v purrr   0.3.4
+## v tibble  3.0.5     v dplyr   1.0.3
+## v tidyr   1.1.2     v stringr 1.4.0
+## v readr   1.4.0     v forcats 0.5.1</code></pre>
+<pre><code>## -- Conflicts ------------------------------------------ tidyverse_conflicts() --
+## x dplyr::filter() masks stats::filter()
+## x dplyr::lag()    masks stats::lag()</code></pre>
+<pre class="r"><code>library(skimr)
+library(rvest)</code></pre>
+<pre><code>## Loading required package: xml2</code></pre>
+<pre><code>## 
+## Attaching package: &#39;rvest&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:purrr&#39;:
+## 
+##     pluck</code></pre>
+<pre><code>## The following object is masked from &#39;package:readr&#39;:
+## 
+##     guess_encoding</code></pre>
+<pre class="r"><code>library(robotstxt)</code></pre>
+<pre><code>## Warning: package &#39;robotstxt&#39; was built under R version 4.0.4</code></pre>
+<pre class="r"><code>paths_allowed(&quot;https://www.apartments.com/winston-salem-nc/?gclid=CjwKCAjw9r-DBhBxEiwA9qYUparLtarTAGWxsU9elNTmtbJu4Pge97m0TxH_S0fbbqjiEzCl-3wRBBoC9z0QAvD_BwE&amp;gclsrc=aw.ds&quot;)</code></pre>
+<pre><code>## 
+ www.apartments.com</code></pre>
+<pre><code>## [1] TRUE</code></pre>
+<pre class="r"><code>page &lt;- read_html (&quot;https://www.apartments.com/winston-salem-nc/?gclid=CjwKCAjw9r-DBhBxEiwA9qYUparLtarTAGWxsU9elNTmtbJu4Pge97m0TxH_S0fbbqjiEzCl-3wRBBoC9z0QAvD_BwE&amp;gclsrc=aw.ds&quot;)
 
+titles &lt;- page %&gt;% 
+  html_nodes(&quot;.title&quot;) %&gt;% 
+  html_text()
+
+rent &lt;- page %&gt;% 
+  html_nodes(&quot;.price-range&quot;) %&gt;% 
+  html_text()</code></pre>
 
 
 

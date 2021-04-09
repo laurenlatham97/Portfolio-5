@@ -5,7 +5,30 @@ date: "4/9/2021"
 output: html_document
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+```{r setup}
+
+library(tidyverse) 
+library(skimr)
+library(rvest)
+library(robotstxt)
+
 ```
 
+```{r check.permission}
+
+paths_allowed("https://www.apartments.com/winston-salem-nc/?gclid=CjwKCAjw9r-DBhBxEiwA9qYUparLtarTAGWxsU9elNTmtbJu4Pge97m0TxH_S0fbbqjiEzCl-3wRBBoC9z0QAvD_BwE&gclsrc=aw.ds")
+```
+
+```{r pull.apartment.info}
+page <- read_html ("https://www.apartments.com/winston-salem-nc/?gclid=CjwKCAjw9r-DBhBxEiwA9qYUparLtarTAGWxsU9elNTmtbJu4Pge97m0TxH_S0fbbqjiEzCl-3wRBBoC9z0QAvD_BwE&gclsrc=aw.ds")
+
+titles <- page %>% 
+  html_nodes(".title") %>% 
+  html_text()
+
+rent <- page %>% 
+  html_nodes(".price-range") %>% 
+  html_text()
+
+
+```
