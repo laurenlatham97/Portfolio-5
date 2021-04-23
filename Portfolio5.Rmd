@@ -5,6 +5,10 @@ date: "4/9/2021"
 output: html_document
 ---
 
+
+The purpose of this portfolio piece is to come up with a list (CSV file) of apartments in a particular price range, by pulling apartments names, addresses, and rent from apartments.com
+
+1. Load packages
 ```{r setup}
 
 library(tidyverse) 
@@ -14,11 +18,13 @@ library(robotstxt)
 
 ```
 
+2. Check permission
 ```{r check.permission}
 
 paths_allowed("https://www.apartments.com/winston-salem-nc/?gclid=CjwKCAjw9r-DBhBxEiwA9qYUparLtarTAGWxsU9elNTmtbJu4Pge97m0TxH_S0fbbqjiEzCl-3wRBBoC9z0QAvD_BwE&gclsrc=aw.ds")
 ```
 
+3. Collect title, rent, and address info. For some reason when I scraped address R pulled a bunch of strings ("\r\n...) so I'm just filtering all of those out 
 ```{r pull.apartment.info}
 page <- read_html ("https://www.apartments.com/winston-salem-nc/?gclid=CjwKCAjw9r-DBhBxEiwA9qYUparLtarTAGWxsU9elNTmtbJu4Pge97m0TxH_S0fbbqjiEzCl-3wRBBoC9z0QAvD_BwE&gclsrc=aw.ds")
 
@@ -26,9 +32,41 @@ titles <- page %>%
   html_nodes(".title") %>% 
   html_text()
 
+
 rent <- page %>% 
   html_nodes(".price-range") %>% 
   html_text()
 
+address <- page %>% 
+  html_nodes(".js-url") %>% 
+  html_text()
+
+apartments <- tibble(address = address)
+
+apartments <- apartments %>% 
+  filter(address != "\r\n                        \r\n                            \r\n                        \r\n                    ")
+
+apartments
+
+```
+
+
+4. Combine apartments name, rent, and address into one data frame
+``` {r create.tibble}
+
+apartments <- apartments %>% 
+  mutate(rent = rent)
+
+apartments <- apartments %>% 
+  mutate(name = titles)
+
+as.data.frame(apartments)
+
+```
+
+5. Save the data frame as a CSV so I can use it during my apartment searching
+```{r write.csv}
+
+write.csv(apartments, "apartments.csv")
 
 ```
